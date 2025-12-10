@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<style>
+    /* Container do Card Detalhado */
+    .car-card-detail {
+        background-color: #2e2e2e;
+        /* Fundo escuro do padrão */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        overflow: hidden;
+        text-align: left;
+        /* Alinhamento à esquerda para leitura melhor de detalhes */
+        max-width: 600px;
+        /* Um pouco mais largo que o card de lista */
+        width: 100%;
+        margin: 20px auto;
+        color: #e7e7e7;
+        /* Texto claro */
+    }
+
+    .car-card-detail img {
+        width: 100%;
+        height: 350px;
+        /* Imagem maior para ver detalhes */
+        object-fit: cover;
+        border-bottom: 1px solid #444;
+    }
+
+    .card-content {
+        padding: 25px;
+    }
+
+    .car-card-detail h2 {
+        font-size: 2rem;
+        margin-top: 0;
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .car-info {
+        font-size: 1.1rem;
+        margin-bottom: 8px;
+        color: #b6b6b6;
+        /* Texto secundário levemente mais apagado */
+    }
+
+    .car-info strong {
+        color: #e7e7e7;
+        font-weight: bold;
+    }
+
+    .car-price {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #ffd000;
+        /* Amarelo destaque */
+        margin: 20px 0;
+        display: block;
+    }
+
+    /* Botões */
+    .buttons-container {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+        justify-content: flex-start;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        border: none;
+        display: inline-block;
+        text-align: center;
+    }
+
+    /* Botão Primário (Amarelo - Padrão do site) */
+    .btn-primary {
+        background-color: #ffd000;
+        color: #000;
+    }
+
+    .btn-primary:hover {
+        background-color: #9b7f01;
+        color: #fff;
+    }
+
+    /* Botão Perigo (Vermelho - Ajustado para o tema escuro) */
+    .btn-danger {
+        background-color: #d9534f;
+        color: #fff;
+    }
+
+    .btn-danger:hover {
+        background-color: #b52b27;
+    }
+
+    /* Botão Voltar (Estilo outline ou neutro) */
+    .btn-back {
+        background-color: transparent;
+        border: 1px solid #757575;
+        color: #e7e7e7;
+    }
+
+    .btn-back:hover {
+        background-color: #444;
+        border-color: #fff;
+    }
+</style>
+
+<div class="car-card-detail">
+    {% if object.photo %}
+    <img src="{{ object.photo.url }}" alt="{{ object.model }} - {{ object.brand }}">
+    {% else %}
+    <img src="{% static 'images/nophoto.png' %}" alt="Foto Não Disponível">
+    {% endif %}
+
+    <div class="card-content">
+        <h2>{{ object.brand }} {{ object.model }}</h2>
+
+        <p class="car-info"><strong>Ano de fabricação:</strong> {{ object.factory_year }}</p>
+        <p class="car-info"><strong>Ano do modelo:</strong> {{ object.model_year }}</p>
+        <p class="car-info"><strong>Placa:</strong> {{ object.plate }}</p>
+
+        <span class="car-price">R$ {{ object.value }}</span>
+
+        {% if object.bio %}
+        <p class="car-info"><strong>Bio:</strong> {{ object.bio }}</p>
+        {% endif %}
+
+        <div class="buttons-container">
+            <a href="{% url 'cars_list' %}" class="btn btn-back">Voltar</a>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'car_update' object.pk %}" class="btn btn-primary">Editar</a>
+            <a href="{% url 'car_delete' object.pk %}" class="btn btn-danger">Excluir</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .card-register {
+        background-color: #363636;
+        padding: 25px 35px;
+        border-radius: 10px;
+        width: 350px;
+    }
+
+    .card-register label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .card-register input {
+        width: 100%;
+        padding: 8px;
+        border-radius: 6px;
+        border: none;
+        margin-bottom: 1rem;
+    }
+
+    .btn-primary {
+        padding: 8px;
+        border-radius: 8px;
+        background-color: #ffd000;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    .btn-primary:hover {
+        background-color: #9b7f01;
+        color: #fff;
+    }
+</style>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <div class="card-register">
+        <h2 style="text-align:center;">Cadastro</h2>
+
+        {{ user_form.username.errors }}
+        <label>Usuário:</label>
+        {{ user_form.username }}
+
+        {{ user_form.password1.errors }}
+        <label>Senha:</label>
+        {{ user_form.password1 }}
+
+        {{ user_form.password2.errors }}
+        <label>Confirme a Senha:</label>
+        {{ user_form.password2 }}
+
+        <input type="submit" value="Cadastrar" class="btn-primary">
+    </div>
+
+</form>
+
+{% endblock %}

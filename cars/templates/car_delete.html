@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    /* Container Centralizado (Estilo Cartão) */
+    .delete-card {
+        background-color: #2e2e2e;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        padding: 40px;
+        max-width: 500px;
+        width: 100%;
+        margin: 40px auto;
+        color: #e7e7e7;
+        text-align: center;
+        border: 1px solid #444;
+    }
+
+    .delete-card h2 {
+        margin-top: 0;
+        color: #d9534f;
+        /* Vermelho para indicar perigo/atenção */
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .warning-text {
+        font-size: 1.1rem;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        color: #b6b6b6;
+    }
+
+    .object-name {
+        color: #fff;
+        font-weight: bold;
+        font-size: 1.3rem;
+        display: block;
+        margin: 10px 0;
+    }
+
+    /* Container dos Botões */
+    .buttons-container {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .btn {
+        text-decoration: none;
+        padding: 12px 24px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.3s ease;
+        border: none;
+        flex: 1;
+        /* Botões do mesmo tamanho */
+    }
+
+    /* Botão Cancelar (Outline / Neutro) */
+    .btn-cancel {
+        background-color: transparent;
+        border: 1px solid #757575;
+        color: #e7e7e7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .btn-cancel:hover {
+        background-color: #444;
+        border-color: #fff;
+        color: #fff;
+    }
+
+    /* Botão Confirmar (Vermelho Sólido) */
+    .btn-confirm {
+        background-color: #d9534f;
+        color: #fff;
+    }
+
+    .btn-confirm:hover {
+        background-color: #c9302c;
+        box-shadow: 0 0 8px rgba(217, 83, 79, 0.4);
+    }
+</style>
+
+<div class="delete-card">
+    <h2>Excluir Carro</h2>
+
+    <p class="warning-text">
+        Você tem certeza que deseja excluir o veículo:
+        <span class="object-name">{{ object.brand }}<br>{{ object.model }}</span>
+        Esta ação <strong>não pode</strong> ser desfeita.
+    </p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="buttons-container">
+            <a href="{% url 'car_detail' object.pk %}" class="btn btn-cancel">Cancelar</a>
+
+            <button type="submit" class="btn btn-confirm">Confirmar Exclusão</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

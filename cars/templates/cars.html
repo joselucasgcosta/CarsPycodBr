@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  /* Busca */
+  .search-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    width: 100%;
+  }
+
+  .search-box input[type="text"] {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+  }
+
+  .search-box button {
+    background-color: #ffd000;
+    color: #000;
+    border: none;
+    padding: 10px 18px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .search-box button:hover {
+    background-color: #9b7f01;
+    color: #fff;
+  }
+
+  /* Cards */
+  .car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .car-card {
+    background-color: #2e2e2e;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    padding-bottom: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    transition: .3s;
+    cursor: pointer;
+  }
+
+  .car-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+
+  .car-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .car-card h2 {
+    margin: 10px 0 5px 0;
+  }
+
+  .car-card span {
+    color: #b6b6b6;
+  }
+
+  .car-card p {
+    font-weight: bold;
+    font-size: 18px;
+    margin-top: 5px;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a:hover {
+    color: #ffdc18;
+  }
+
+  .no-results {
+    text-align: center;
+    font-size: 20px;
+    opacity: .7;
+  }
+
+  .search-form,
+  .search-box {
+    width: 100%;
+    display: block;
+  }
+</style>
+
+<form method="GET" action="{% url 'cars_list' %}">
+  <div class="search-box">
+    <input type="text" name="search" placeholder="Buscar carro..." value="{{ request.GET.search }}">
+    <button type="submit">Buscar</button>
+  </div>
+</form>
+
+
+<div class="car-grid">
+  {% if cars %}
+  {% for car in cars %}
+  <a href="{% url 'car_detail' car.pk %}">
+    <div class="car-card">
+      {% if car.photo %}
+        <img src="{{ car.photo.url }}" alt="{{ car.model }}">
+      {% else %}
+        <img src="{% static 'images/nophoto.png' %}" alt="Foto Não Disponível">
+      {% endif %}
+      <h2>{{ car.model }}</h2>
+      <span>{{ car.brand }} - {{ car.serie }}</span>
+      <p>R$ {{ car.value }}</p>
+    </div>
+  </a>
+  {% endfor %}
+  {% else %}
+  <p class="no-results">Nenhum carro encontrado.</p>
+  {% endif %}
+</div>
+
+{% endblock %}
